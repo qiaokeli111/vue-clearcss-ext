@@ -11,7 +11,9 @@ var {
   CompletionItemKind,
   TextDocumentPositionParams,
   TextDocumentSyncKind,
-  InitializeResult
+  InitializeResult,
+  Position,
+  Range
 } = require('vscode-languageserver/node')
 var { findLib } = require('./parse')
 const { Files } = require('vscode-languageserver')
@@ -40,31 +42,33 @@ async function validateTextDocument (textDocument) {
   if (unvuecss) {
     const uri = URI.parse(textDocument.uri)
     var diagnostics = []
-    unvuecss(uri.fsPath,{console:false}).then(e => {
+    unvuecss(uri.fsPath,{console:false,vueData:textDocument.getText()}).then(e => {
       if (e && Array.isArray(e)) {
           e.forEach(i=>{
-              let positionData = i.positionData || []
-            //   const diagnostic = Diagnostic.create(
-            //     Range.create(startPosition, endPosition),
-            //     message,
-            //     DiagnosticSeverity.Warning,
-            //     range.unusedRule,
-            //     'vue-clearcss',
-            // );
-            // const diagnostic = {
-            //     severity: DiagnosticSeverity.Warning,
-            //     range: {
-            //         start: connection.Position(positionData[0],0),
-            //         end: connection.Position(positionData[0],Number.MAX_VALUE),
-            //     },
-            //     message: `selector ${i.name} is not use.`,
-            //     source: 'ex'
-            // };
-            diagnostics.push(diagnostic)
+              i.forEach(h=>{
+                let positionData = h.positionData || [],name=h.name.trim()
+                let text = textDocument.getText({
+                    start: Position.create(positionData[0]-1,0),
+                    end: textDocument.positionAt(textDocument.offsetAt(Position.create(positionData[0], 0)) - 1),
+                })
+                let startIndex = text.indexOf(name)
+                const diagnostic = {
+                    severity: DiagnosticSeverity.Warning,
+                    range: {
+                        start: Position.create(positionData[0]-1,startIndex || 0),
+                        end: Position.create(positionData[0]-1,startIndex ? startIndex+name.length : text.length),
+                    },
+                    message: `selector ${name} is not use.`,
+                    source: 'vue-clearcss'
+                };
+                
+                diagnostics.push(diagnostic)
+              })
+              
           })
       }
+      connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     })
-    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
   }
 }
 

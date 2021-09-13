@@ -16,7 +16,7 @@ async function findLib (textDocument,connection) {
 //     connection.window.showErrorMessage(`not find vue-clearcss, please npm install`);
 //   }
   
-  var lib = require('D:/czj/gr/node/clearcss/index.js')
+  var lib = require('D:/czj/vue/vue-clearcss/index.js')
   return lib
 }
 module.exports = {
