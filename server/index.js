@@ -36,11 +36,36 @@ documents.onDidChangeContent(change => {
 })
 
 async function validateTextDocument (textDocument) {
-  var unvuecss = await findLib(textDocument)
-  const uri = URI.parse(textDocument.uri)
-  unvuecss(uri.fsPath).then(e => {
-    console.log(e, 22)
-  })
+  var unvuecss = await findLib(textDocument, connection)
+  if (unvuecss) {
+    const uri = URI.parse(textDocument.uri)
+    var diagnostics = []
+    unvuecss(uri.fsPath,{console:false}).then(e => {
+      if (e && Array.isArray(e)) {
+          e.forEach(i=>{
+              let positionData = i.positionData || []
+            //   const diagnostic = Diagnostic.create(
+            //     Range.create(startPosition, endPosition),
+            //     message,
+            //     DiagnosticSeverity.Warning,
+            //     range.unusedRule,
+            //     'vue-clearcss',
+            // );
+            // const diagnostic = {
+            //     severity: DiagnosticSeverity.Warning,
+            //     range: {
+            //         start: connection.Position(positionData[0],0),
+            //         end: connection.Position(positionData[0],Number.MAX_VALUE),
+            //     },
+            //     message: `selector ${i.name} is not use.`,
+            //     source: 'ex'
+            // };
+            diagnostics.push(diagnostic)
+          })
+      }
+    })
+    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+  }
 }
 
 // Make the text document manager listen on the connection

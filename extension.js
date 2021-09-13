@@ -9,7 +9,6 @@ var { LanguageClient, TransportKind } = require('vscode-languageclient/node')
 let client
 
 function activate (context) {
-    console.log(process.versions,66);
   // The server is implemented in node
   const serverModule = context.asAbsolutePath('server/index.js')
   // The debug options for the server
