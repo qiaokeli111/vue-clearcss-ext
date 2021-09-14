@@ -12,6 +12,7 @@
   "activationEvents": [
     "onLanguage:plaintext"
   ],
+  "icon": "images/icon.jpg",
   "main": "./extension.js",
   "contributes": {
     "configuration": {

@@ -94,16 +94,18 @@ async function validateTextDocument (textDocument) {
                             end: Position.create(position[0]-1,1000),
                         })
                         let startIndex = text.indexOf(name)
-                        const diagnostic = {
-                            severity: DiagnosticSeverity.Warning,
-                            range: {
-                                start: Position.create(position[0]-1,startIndex || 0),
-                                end: Position.create(position[0]-1,startIndex ? startIndex+name.length : text.length),
-                            },
-                            message: `selector ${name} is not use.`,
-                            source: 'vue-clearcss'
-                        };
-                        diagnostics.push(diagnostic)
+                        if (startIndex) {
+                            const diagnostic = {
+                                severity: DiagnosticSeverity.Warning,
+                                range: {
+                                    start: Position.create(position[0]-1,startIndex || 0),
+                                    end: Position.create(position[0]-1,startIndex ? startIndex+name.length : text.length),
+                                },
+                                message: `selector ${name} is not use.`,
+                                source: 'vue-clearcss'
+                            };
+                            diagnostics.push(diagnostic)
+                        }
                     }
                   } catch (error) {
                       console.log(error);
