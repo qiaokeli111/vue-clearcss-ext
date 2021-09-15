@@ -94,7 +94,7 @@ async function validateTextDocument (textDocument) {
                             end: Position.create(position[0]-1,1000),
                         })
                         let startIndex = text.indexOf(name)
-                        if (startIndex) {
+                        if (startIndex >= 0) {
                             const diagnostic = {
                                 severity: DiagnosticSeverity.Warning,
                                 range: {
