@@ -15,7 +15,7 @@ var {
   Position,
   Range
 } = require('vscode-languageserver/node')
-var { findLib } = require('./parse')
+var { findLib,getAbsoluteUrl } = require('./parse')
 const { URI } = require('vscode-uri');
 var path = require('path')
 // Create a connection for the server, using Node's IPC as a transport.
@@ -36,20 +36,28 @@ documents.onDidChangeContent(change => {
         validateTextDocument(change.document)
     }
 })
+documents.onDidSave(()=>{
+    for (const document of documents.all()) {
+		if (document.languageId === 'vue') {
+            validateTextDocument(document)
+        }
+	}
+})
 
 async function validateTextDocument (textDocument) {
   var unvuecss = await findLib(textDocument, connection)
   if (unvuecss) {
-    const uri = URI.parse(textDocument.uri)
+    const uri = URI.parse(textDocument.uri).fsPath
     var diagnostics = [],cssFile = {}
-    unvuecss(uri.fsPath,{console:false,vueData:textDocument.getText()}).then(e => {
+    unvuecss(uri,{console:false,vueData:textDocument.getText()}).then(e => {
       if (e && Array.isArray(e)) {
           e.forEach(i=>{
               i.forEach(h=>{
                   try {
                     let positionData = h.positionData || {},name=h.name.trim()
                     if (positionData.from) {
-                       let fileName = path.basename(positionData.sourceUrl)
+                       let fileRealUrl = getAbsoluteUrl(positionData.sourceUrl,uri)
+                       let fileName = path.basename(fileRealUrl)
                        
                        let m,text = textDocument.getText(),pattern=new RegExp(fileName,'gm')
                        while((m = pattern.exec(text))){
@@ -76,13 +84,13 @@ async function validateTextDocument (textDocument) {
                                 let {position} = positionData
                                 cssFile[positionData.sourceUrl].relatedInformation.push({
                                     location: {
-                                        uri: positionData.sourceUrl,
+                                        uri: fileRealUrl,
                                         range: {
                                             start: Position.create(position[0]-1 , 0),
                                             end: Position.create(position[0]-1 , 0),
                                         },
                                     },
-                                    message: `selector ${name.replace(positionData.from,'')} is not use in line ${position[0]}.`
+                                    message: `selector ${name.replace(positionData.from,'')} is not use .`
                                 })
                                 break
                             }

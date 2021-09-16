@@ -7,7 +7,7 @@
     "vscode": "^1.60.0"
   },
   "categories": [
-    "Other"
+    "Linters"
   ],
   "activationEvents": [
     "onLanguage:plaintext"

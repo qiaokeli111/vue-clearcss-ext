@@ -19,6 +19,15 @@ async function findLib (textDocument,connection) {
   var lib = require('D:/czj/gr/node/clearcss/index.js')
   return lib
 }
+function getAbsoluteUrl(url,parseFileUrl){
+    if (url.startsWith('file')) {
+        return url
+    }else{
+        let absoluteUrl = path.resolve(parseFileUrl,'..',url)
+        return URI.file(absoluteUrl).toString()
+    }
+}
 module.exports = {
-  findLib
+  findLib,
+  getAbsoluteUrl
 }
