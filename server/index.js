@@ -101,19 +101,25 @@ async function validateTextDocument (textDocument) {
                             start: Position.create(position[0]-1,0),
                             end: Position.create(position[0]-1,1000),
                         })
-                        let startIndex = text.indexOf(name)
+                        let startIndex = text.lastIndexOf(name)
+                        const diagnostic = {
+                            severity: DiagnosticSeverity.Warning,
+                            message: `selector ${name} is not use.`,
+                            source: 'vue-clearcss'
+                        };
                         if (startIndex >= 0) {
-                            const diagnostic = {
-                                severity: DiagnosticSeverity.Warning,
-                                range: {
-                                    start: Position.create(position[0]-1,startIndex || 0),
-                                    end: Position.create(position[0]-1,startIndex ? startIndex+name.length : text.length),
-                                },
-                                message: `selector ${name} is not use.`,
-                                source: 'vue-clearcss'
-                            };
-                            diagnostics.push(diagnostic)
+                            diagnostic.range ={
+                                start: Position.create(position[0]-1,startIndex || 0),
+                                end: Position.create(position[0]-1,startIndex ? startIndex+name.length : text.length),
+                            }
+                        }else{
+                            startIndex = text.lastIndexOf(text.trim())
+                            diagnostic.range ={
+                                start: Position.create(position[0]-1,startIndex > 0?startIndex : 0),
+                                end: Position.create(position[0]-1,1000),
+                            }
                         }
+                        diagnostics.push(diagnostic)
                     }
                   } catch (error) {
                       console.log(error);

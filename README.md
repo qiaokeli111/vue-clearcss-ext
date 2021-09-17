@@ -1,65 +1,17 @@
-# vue-clearcss-ext README
+# vue-clearcss
 
-This is the README for your extension "vue-clearcss-ext". After writing up a brief description, we recommend including the following sections.
+这是一个用来找出vue sfc类型文件中多余无用css代码的工具，完美解析scss和less，sass仅支持嵌套写法。
+随着项目的不断迭代文件里会残留着大量多余且无用css，不像js和html，人为处理起来会非常麻烦且不可靠，所以就出现了这个库，
+网上有几个评价不错的css处理工具如uncss等都不能直接在vue里面使用，所以我利用了[vue]的编译工具和[postcss]来完成这个功能
 
-## Features
+[Vue]: https://cn.vuejs.org/v2/guide/
+[PostCSS]: https://github.com/postcss/postcss
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 安装前请Install
 
-For example if there is an image subfolder under your extension project workspace:
+```js
+npm install -g vue-clearcss
+```
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+之后在vue文件中如果有无效的css则会出现如下警告
+![avatar](https://z3.ax1x.com/2021/09/17/4MhJSS.png)
