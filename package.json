@@ -1,7 +1,7 @@
 {
   "name": "vue-clearcss-ext",
   "displayName": "vue-clearcss-ext",
-  "description": "",
+  "description": "find unusecss in vue 在vue组件中找到多余的css代码",
   "version": "0.0.1",
   "keywords": [
     "vscode",
