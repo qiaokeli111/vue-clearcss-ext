@@ -104,7 +104,7 @@ async function validateTextDocument (textDocument) {
                         let startIndex = text.lastIndexOf(name)
                         const diagnostic = {
                             severity: DiagnosticSeverity.Warning,
-                            message: `selector ${name} is not use.`,
+                            message: h.errType !== 1 ? `selector ${name} is not use.` : name,
                             source: 'vue-clearcss'
                         };
                         if (startIndex >= 0) {
