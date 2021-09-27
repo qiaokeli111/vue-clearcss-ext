@@ -14,4 +14,29 @@ npm install -g vue-clearcss
 ```
 
 之后在vue文件中如果有无效的css则会出现如下警告
-![avatar](https://z3.ax1x.com/2021/09/17/4MhJSS.png)
+![avatar](https://s3.bmp.ovh/imgs/2021/09/bfae04de325f707a.gif)
+
+存在js中的class名和作用于子组件的class会被认为是无效的，可以用使用忽略注释
+package.json 中使用
+```js
+{
+    "ignoreCss": [
+        "page",
+        {
+        "reg": "page",
+        "attr": "g"
+        }
+    ],
+}
+```
+在css文件中 ignoreConfig（如例子中只要class链中包含了ff都会通过） 是作用于整个vue，ignorecss是作用于单个calss（注意事放在class里面，而且由于编译器的限制嵌套的class必须每个都写），建议使用ignoreConfig，
+```js
+/* ignoreConfig ['ff'] */
+.qw{
+    color: #000;
+}
+.re{
+    /* ignorecss */
+    color: #000;
+}
+```

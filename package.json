@@ -2,14 +2,16 @@
   "name": "vue-clearcss-ext",
   "displayName": "vue-clearcss-ext",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "vscode",
     "plugin"
   ],
+  "icon": "images/icon.png",
+  "repository": "https://github.com/qiaokeli111/vue-clearcss-ext",
   "publisher": "qiaokeli",
   "engines": {
-    "vscode": "^1.27.0"
+    "vscode": "^1.43.0"
   },
   "categories": [
     "Linters"
@@ -27,7 +29,8 @@
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
     "typescript": "^4.3.2",
-    "vscode-test": "^1.5.2"
+    "vscode-test": "^1.5.0",
+    "@types/vscode": "1.43.0"
   },
   "dependencies": {
     "pkg-dir": "^5.0.0",
